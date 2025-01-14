@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Bulk File Renamer</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <h1>Bulk File Renamer</h1>
@@ -9,68 +10,6 @@
     <button id="startButton" onclick="renameFiles()" disabled>Start</button>
     <div id="results"></div>
 
-    <script>
-        // Function to generate a UUID
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
-        let dirHandle;
-
-        async function selectFolder() {
-            const results = document.getElementById('results');
-            results.innerHTML = '';
-
-            try {
-                // Show directory picker to select the folder
-                dirHandle = await window.showDirectoryPicker();
-
-                // Enable the Start button
-                document.getElementById('startButton').disabled = false;
-
-                results.innerHTML = 'Folder selected. Click "Start" to rename files.';
-            } catch (err) {
-                console.error(err);
-                results.innerHTML = 'Error selecting folder. Please try again.';
-            }
-        }
-
-        async function renameFiles() {
-            const results = document.getElementById('results');
-            results.innerHTML = '';
-
-            if (!dirHandle) {
-                alert('Please select a folder first.');
-                return;
-            }
-
-            let renamedFiles = 0;
-
-            for await (const entry of dirHandle.values()) {
-                if (entry.kind === 'file') {
-                    const extension = entry.name.split('.').pop();
-                    const newName = generateUUID() + '.' + extension;
-
-                    // Create a new file handle with the new name
-                    const newHandle = await dirHandle.getFileHandle(newName, { create: true });
-                    const writable = await newHandle.createWritable();
-                    const file = await entry.getFile();
-                    await writable.write(file);
-                    await writable.close();
-                    await entry.remove();
-
-                    const result = document.createElement('div');
-                    result.textContent = `Original: ${entry.name}, New: ${newHandle.name}`;
-                    results.appendChild(result);
-                    renamedFiles++;
-                }
-            }
-
-            alert(`All file names have been changed. Total renamed: ${renamedFiles}`);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

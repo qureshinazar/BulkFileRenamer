@@ -20,7 +20,7 @@ This project uses the File System Access API, which is supported in modern brows
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/BulkFileRenamer.git
+git clone https://github.com/qureshinazar/BulkFileRenamer.git
 ```
 Open the `index.html` file in your web browser to start using the tool.
 
